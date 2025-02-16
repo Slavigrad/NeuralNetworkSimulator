@@ -7,7 +7,7 @@ import App from './App.jsx';
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         {/* Add basename for GitHub Pages subfolder */}
-        <BrowserRouter basename="/NeuralNetworkSimulator">
+        <BrowserRouter basename="/NeuralNetworkSimulator/">
             <App />
         </BrowserRouter>
     </StrictMode>,

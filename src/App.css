@@ -1,0 +1,1451 @@
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  overflow: hidden;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Container for the entire app layout */
+.app-container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 60px);
+  width: 100%;
+  background-color: #f7f7f7;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  overflow: hidden; /* Change back to hidden for the main container */
+}
+
+/* Styling for the Controls Panel (sidebar) */
+.controls-panel {
+  width: 300px;
+  min-width: 300px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+  color: #333;
+  height: calc(100vh - 60px);
+  position: relative; /* Add this */
+  z-index: 2; /* Add this to ensure sidebar stays above visualization */
+}
+
+/* Styling for the network visualization container */
+.visualization-container {
+  flex: 1;
+  position: relative;
+  overflow: visible;
+  background-color: #e5e5e5;
+  cursor: grab;
+  pointer-events: all;
+  z-index: 1; /* Add this to keep it below sidebar */
+}
+
+.visualization-container.dragging {
+  cursor: grabbing; /* Show grabbing hand when dragging */
+}
+
+/* The actual SVG container */
+.network-visualization {
+  position: absolute;
+  min-width: 100%;
+  width: auto;
+  height: 100%;
+  user-select: none;
+  pointer-events: all;
+  overflow: visible;
+}
+
+/* Style for slider inputs */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+/* Slider track */
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: #e9ecef;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+}
+
+/* Slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+  margin-top: -6px; /* Center the thumb on the track */
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  border: 2px solid #ffffff;
+  transition: all 0.2s ease;
+}
+
+/* Hover state */
+input[type="range"]:hover::-webkit-slider-thumb {
+  background: #0056b3;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+  transform: scale(1.1);
+}
+
+/* Focus state */
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+}
+
+/* Firefox styles */
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  cursor: pointer;
+  background: #e9ecef;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  border: 2px solid #ffffff;
+  transition: all 0.2s ease;
+}
+
+/* Slider container styling */
+.slider-container {
+  padding: 5px 0;
+}
+
+.slider-container label {
+  display: block;
+  margin-bottom: 8px;
+  color: #495057;
+  font-weight: 500;
+}
+
+/* Value display */
+.slider-value {
+  display: inline-block;
+  min-width: 40px;
+  padding: 2px 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-left: 8px;
+  font-size: 0.9em;
+  color: #495057;
+}
+
+/* Label styling for clarity */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* Style for dropdowns and text inputs */
+select, input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+
+/* Button styling */
+button {
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Update the weight label styling */
+.weight-label {
+  pointer-events: none;
+  user-select: none;
+  opacity: 1;
+  font-weight: 600;
+  font-size: 9px;
+}
+
+.visualization-container:not(:hover) .weight-label {
+  opacity: 0.9;
+}
+
+/* Add to your existing CSS */
+.input-values-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.input-value-control {
+    margin-bottom: 10px;
+}
+
+.input-value-control input {
+    width: 80px;
+    padding: 4px;
+    margin-left: 10px;
+}
+
+/* Add to your existing CSS */
+.export-button {
+    background-color: #28a745;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.export-button:hover {
+    background-color: #218838;
+}
+
+/* Add to your existing CSS */
+.net-input-display {
+  opacity: 0.9;
+  pointer-events: all;
+}
+
+.net-input-display:hover {
+  opacity: 1;
+}
+
+.net-input-label {
+  font-family: monospace;
+  user-select: none;
+}
+
+/* Update the activation function styling */
+.activation-function-container {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.activation-info {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.activation-info .formula {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #0056b3;
+  margin-bottom: 12px;
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+}
+
+.activation-function-graph {
+  width: 100%;
+  height: 100px;
+  margin: 12px 0;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.activation-info .description {
+  font-size: 0.9em;
+  color: #666;
+  line-height: 1.4;
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  margin-top: 12px;
+}
+
+/* Make the select element more prominent */
+.activation-function-container select {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  font-size: 1em;
+  color: #333;
+  background-color: white;
+  cursor: pointer;
+}
+
+.activation-function-container select:hover {
+  border-color: #0056b3;
+}
+
+.activation-function-container label {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Update Floating info panel styling */
+.activation-function-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 300px;
+  text-align: left;
+  z-index: 100;
+}
+
+.activation-overlay-content h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.activation-overlay-content .formula {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  background-color: #f8f9fa;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  border: 1px solid #e0e0e0;
+  color: #0056b3;
+}
+
+.activation-overlay-content .description {
+  font-size: 0.9em;
+  color: #666;
+  background-color: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Update/Add top panel styling */
+.top-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 60px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.app-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2196F3;
+  margin: 0;
+}
+
+.network-stats {
+  display: flex;
+  gap: 24px;
+  margin: 0 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2196F3;
+}
+
+/* Updated Controls Panel Styling */
+.control-section {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.section-icon {
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+
+.layer-controls {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.layer-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.layer-icon {
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
+.hidden-layers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.hidden-layer-item {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.neuron-count {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  margin-left: 8px;
+}
+
+.input-values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.input-value-control {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.input-value-control input {
+  width: 100%;
+  text-align: center;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 1em;
+}
+
+.action-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button .icon {
+  margin-right: 8px;
+}
+
+.randomize {
+  background-color: #6c757d;
+}
+
+.randomize:hover {
+  background-color: #5a6268;
+}
+
+/* Top panel buttons styling */
+.top-panel-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.top-panel-controls button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  height: 36px;
+  min-width: 120px;
+  justify-content: center;
+  margin: 0; /* Remove any margins */
+}
+
+.top-panel .randomize-button {
+  background-color: #6c757d;
+}
+
+.top-panel .export-button {
+  background-color: #28a745;
+}
+
+/* Update input node styling */
+.input-node {
+  cursor: pointer !important; /* Override the grab cursor for input nodes */
+}
+
+.input-node:hover circle {
+  stroke: #4CAF50;
+  stroke-width: 3px;
+  filter: brightness(1.1);
+}
+
+/* Remove the previous hover::before and hover::after effects */
+.input-node-popup {
+  position: absolute;
+  background: white;
+  padding: 12px 32px 12px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1000;
+  animation: popup 0.2s ease-out;
+  pointer-events: all;
+}
+
+.input-node-popup input {
+  width: 80px;
+  padding: 6px;
+  border: 2px solid #4CAF50;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Add a small edit indicator */
+.input-node .edit-indicator {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.input-node:hover .edit-indicator {
+  opacity: 1;
+}
+
+@keyframes popup {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Weight interaction styling */
+.weight-connection {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.weight-line {
+  transition: none;
+}
+
+.weight-changed {
+  animation: weightPulse 0.5s ease;
+}
+
+@keyframes weightPulse {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* Add classes for weight increase/decrease */
+.weight-increased .weight-line {
+  stroke: #4CAF50 !important; /* Green */
+}
+
+.weight-decreased .weight-line {
+  stroke: #f44336 !important; /* Red */
+}
+
+.weight-label {
+  transition: all 0.3s ease;
+}
+
+.weight-changed .weight-label {
+  font-weight: bold;
+}
+
+/* Update weight popup styling */
+.weight-popup {
+  position: relative;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.weight-popup input {
+  width: 80px;
+  padding: 6px;
+  border: 2px solid #2196F3;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.weight-popup-tooltip {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Visual feedback for interactive elements */
+.connection-group {
+  cursor: pointer;
+}
+
+.connection-group:hover .weight-line {
+  filter: brightness(1.2);
+}
+
+.connection-group:hover .weight-label-bg {
+  fill: #e3f2fd;
+}
+
+/* Draggable popup styling */
+.draggable-popup {
+  position: absolute;
+  z-index: 1000;
+  user-select: none;
+  cursor: grab;
+  pointer-events: all;
+  transform-origin: center;
+}
+
+.draggable-popup * {
+  pointer-events: all; /* Ensure all popup children capture events */
+}
+
+.draggable-popup.dragging {
+  cursor: grabbing;
+}
+
+.draggable-popup .weight-popup,
+.draggable-popup .input-node-popup {
+  position: relative;
+  cursor: inherit;
+  transform: translate(-50%, 0); /* Center horizontally */
+}
+
+/* Update popup positioning */
+.weight-popup,
+.input-node-popup {
+  position: relative;
+  background: white;
+  padding: 12px 32px 12px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: popup 0.2s ease-out;
+}
+
+/* Remove these rules as we're handling positioning in the component */
+.weight-popup {
+  transform: none;
+  margin-top: 0;
+}
+
+.input-node-popup {
+  transform: none;
+  margin-top: 0;
+}
+
+/* Update Loss History Panel and add Zoom Controls positioning */
+.loss-history-panel {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: 150px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 15px;
+    z-index: 2;
+}
+
+/* Move zoom controls next to loss history panel */
+.zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 240px; /* Position it next to loss history panel */
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 2;
+    gap: 8px; /* Add gap between elements */
+}
+
+.zoom-button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #2196F3; /* Change to blue to match the theme */
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    padding: 0;
+}
+
+.zoom-button:hover {
+    background: #1976D2;
+}
+
+.zoom-level {
+    margin: 0 8px;
+    font-size: 14px;
+    color: #333;
+    min-width: 50px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Expected output node styling */
+.expected-output-node {
+  cursor: pointer;
+}
+
+.expected-output-node:hover circle {
+  stroke: #F57F17;
+  stroke-width: 3px;
+  filter: brightness(1.1);
+}
+
+.expected-output-popup {
+  position: relative;
+  background: white;
+  padding: 12px 32px 12px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.expected-output-popup input {
+  width: 80px;
+  padding: 6px;
+  border: 2px solid #FBC02D;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.expected-output-popup .popup-tooltip {
+  font-size: 12px;
+  color: #666;
+}
+
+/* Error display styling */
+.error-display {
+  font-family: monospace;
+  fill: #666;
+  font-weight: 500;
+}
+
+.total-error-node {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.total-error-node text {
+  font-family: monospace;
+  user-select: none;
+}
+
+.expected-output-node text {
+  user-select: none;
+}
+
+/* Expected output controls styling */
+.expected-values-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.expected-values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.expected-value-control {
+  background-color: #fff3e0;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  border: 1px solid #ffe0b2;
+}
+
+.expected-value-control input {
+  width: 100%;
+  text-align: center;
+  border: 2px solid #fbc02d;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 1em;
+}
+
+.expected-value-control label {
+  color: #f57f17;
+  font-size: 0.9em;
+  margin-bottom: 6px;
+}
+
+/* Update Loss Function styling to match Activation Function */
+.loss-function-container {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  margin-top: 10px;
+}
+
+.loss-function-container select {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border: 2px solid #007bff;  /* Same blue as activation function */
+  border-radius: 4px;
+  font-size: 1em;
+  color: #333;
+  background-color: white;
+  cursor: pointer;
+}
+
+.loss-function-container select:hover {
+  border-color: #0056b3;
+}
+
+.loss-info {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.loss-info .formula {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #0056b3;  /* Same blue as activation function */
+  margin-bottom: 12px;
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+}
+
+.loss-info .description {
+  font-size: 0.9em;
+  color: #666;
+  line-height: 1.4;
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  margin-top: 12px;
+}
+
+/* Add hover effect for better visibility */
+.activation-function-overlay:hover,
+.loss-function-overlay:hover {
+  z-index: 3;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Update the loss function overlay positioning */
+.loss-function-overlay {
+    position: absolute;
+    top: 200px;  /* Change from top: 20px to 120px to move it down */
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 300px;
+    z-index: 100;
+}
+
+/* Keep the activation function overlay at the top */
+.activation-function-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    max-width: 300px;
+    z-index: 100;
+}
+
+.loss-overlay-content {
+  font-size: 14px;
+}
+
+.loss-overlay-content h3 {
+  margin: 0 0 10px 0;
+  color: #0056b3; /* Blue color for the header */
+  font-weight: bold;
+}
+
+.loss-overlay-content .formula {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 8px 0;
+  color: #0056b3; /* Blue color for the formula */
+  border: 1px solid #e0e0e0;
+}
+
+.loss-overlay-content .description {
+  color: #666;
+  font-size: 12px;
+  line-height: 1.4;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Update button group styling */
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+}
+
+.action-button .icon {
+    font-size: 16px;
+}
+
+/* Training Controls Panel Styling */
+.training-controls-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.training-parameters {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.parameter-group {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.parameter-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+}
+
+.parameter-group input {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.parameter-tooltip {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.training-status {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.status-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.training-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.training-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.training-button.step {
+    background-color: #6c757d;
+}
+
+.training-button:not(.step) {
+    background-color: #28a745;
+}
+
+.training-button:hover {
+    filter: brightness(0.9);
+}
+
+.training-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Loss History Panel Styling */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.loss-function-label {
+    font-size: 12px;
+    color: #666;
+}
+
+.loss-chart {
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    padding: 5px;
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.loss-bar {
+    flex: 1;
+    min-width: 4px;
+    background-color: #ff0000;
+    transition: height 0.3s ease;
+    opacity: 0.7;
+}
+
+.loss-bar:hover {
+    opacity: 1;
+}
+
+.current-loss {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    font-family: monospace;
+}
+
+/* Update weight flash animation styles */
+@keyframes weightFlash {
+    0% {
+        filter: brightness(1);
+        stroke: var(--original-color);
+    }
+    15% {
+        filter: brightness(2);
+        stroke: #FFD700;
+    }
+    30%, 100% {
+        filter: brightness(1);
+        stroke: var(--original-color);
+    }
+}
+
+.weight-flash {
+    animation: weightFlash 0.5s ease-out forwards;
+}
+
+/* Remove any transition from weight line to ensure instant color changes */
+.weight-line {
+    transition: none;
+    --original-color: currentColor;
+}
+
+/* Remove any additional effects */
+.weight-flash .weight-line {
+    filter: none;
+}
+
+/* Update label flash effect */
+@keyframes labelFlash {
+    0% {
+        fill: #333;
+    }
+    15% {
+        fill: #FFD700;
+    }
+    30% {
+        fill: #333;
+    }
+    100% {
+        fill: #333;
+    }
+}
+
+/* Gradient visualization styles */
+.gradient-flow {
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.weight-connection:hover .gradient-flow {
+    opacity: 0.8 !important;
+}
+
+.weight-label tspan {
+    opacity: 0.8;
+}
+
+/* Add gradient flow animation */
+@keyframes gradientFlow {
+    0% {
+        stroke-dashoffset: 8;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.gradient-flow {
+    animation: gradientFlow 1s linear infinite;
+}
+
+/* Make batch progress more prominent */
+.batch-progress {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f8ff;  /* Light blue background */
+    border: 1px solid #cce5ff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.progress-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #4CAF50;
+    transition: width 0.3s ease;
+}
+
+.batch-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+}
+
+.stat-item label {
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.stat-item span {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Error ring animation */
+@keyframes errorPulse {
+    0% { stroke-opacity: 0.8; }
+    50% { stroke-opacity: 0.4; }
+    100% { stroke-opacity: 0.8; }
+}
+
+.error-ring {
+    animation: errorPulse 2s infinite;
+    transition: stroke 0.3s ease;
+}
+
+/* Add tooltip for error values */
+.neuron-container {
+    position: relative;
+}
+
+.error-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Update Learning Progress Panel Styles */
+.learning-progress-panel {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.learning-progress-panel h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.metrics-section {
+    margin: 10px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.metrics-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.layer-error-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.error-bar-container {
+    flex: 1;
+    margin-left: 10px;
+    height: 20px;
+    background: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.error-bar {
+    height: 100%;
+    background: #4CAF50;
+    transition: width 0.3s ease;
+}
+
+.metric-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.metric-item .good {
+    color: #4CAF50;
+}
+
+.metric-item .warning {
+    color: #FFC107;
+}
+
+.metric-item .normal {
+    color: #666;
+}
